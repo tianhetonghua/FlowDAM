@@ -1,0 +1,179 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    android:background="@color/background"
+    tools:context=".MainActivity">
+
+    <!-- 标题部分 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="32dp">
+        <TextView 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content"
+            android:text="DAM Control"
+            android:textSize="32sp" 
+            android:textStyle="bold" 
+            android:textColor="@color/text_primary" 
+            android:letterSpacing="0.05"
+            android:shadowColor="@color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="3"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Network Forwarding Control"
+            android:textSize="16sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="8dp"
+            android:letterSpacing="0.02"/>
+    </LinearLayout>
+
+    <!-- 主内容卡片 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/card_background"
+        android:padding="28dp"
+        android:layout_gravity="center"
+        android:maxWidth="420dp"
+        android:elevation="8dp"
+        android:radius="20dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:outlineProvider="background">
+
+        <!-- IP输入框 -->
+        <EditText 
+            android:id="@+id/etIp" 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:hint="Proxy IP"
+            android:layout_marginTop="8dp"
+            android:padding="16dp"
+            android:background="@drawable/edittext_rounded"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:letterSpacing="0.02"
+            android:drawablePadding="8dp"
+            android:autofillHints="ipAddress"
+            tools:text="192.168.1.1"/>
+
+        <!-- 端口输入框 -->
+        <EditText 
+            android:id="@+id/etPort" 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:hint="Port" 
+            android:inputType="number"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:background="@drawable/edittext_rounded"
+            android:textSize="16sp"
+            android:textColorHint="@color/text_hint"
+            android:textColor="@color/text_primary"
+            android:letterSpacing="0.02"
+            android:drawablePadding="8dp"
+            android:autofillHints="port"
+            tools:text="8888"/>
+
+<!--        &lt;!&ndash; 模式选择 &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_marginTop="24dp">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Forwarding Mode"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/text_primary"-->
+<!--                android:layout_marginBottom="16dp"-->
+<!--                android:letterSpacing="0.02"/>-->
+<!--            <RadioGroup -->
+<!--                android:id="@+id/rgMode" -->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" -->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center">-->
+<!--                <RadioButton -->
+<!--                    android:id="@+id/rbIptables" -->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content" -->
+<!--                    android:text="Root"-->
+<!--                    android:checked="true"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textColor="@color/text_primary"-->
+<!--                    android:buttonTint="@color/primary"-->
+<!--                    android:layout_marginEnd="48dp"-->
+<!--                    android:padding="8dp"/>-->
+<!--                <RadioButton -->
+<!--                    android:id="@+id/rbVpn" -->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content" -->
+<!--                    android:text="Rootless (WIP)"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textColor="@color/text_primary"-->
+<!--                    android:buttonTint="@color/primary"-->
+<!--                    android:padding="8dp"/>-->
+<!--            </RadioGroup>-->
+<!--        </LinearLayout>-->
+
+        <!-- 选择应用按钮 -->
+        <Button 
+            android:id="@+id/btnSelectApps" 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:text="Select Apps" 
+            android:layout_marginTop="28dp"
+            android:padding="18dp"
+            android:textSize="16sp"
+            android:textColor="@color/primary"
+            android:background="@drawable/button_outline"
+            android:letterSpacing="0.02"
+            android:elevation="4dp"
+            android:stateListAnimator="@null"
+            android:fontFamily="sans-serif-medium"/>
+
+        <!-- 开始转发按钮 -->
+        <Button 
+            android:id="@+id/btnStart" 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:text="Start Forwarding" 
+            android:layout_marginTop="16dp"
+            android:padding="18dp"
+            android:textSize="16sp"
+            android:textColor="@color/white" 
+            android:background="@drawable/button_primary"
+            android:letterSpacing="0.02"
+            android:elevation="6dp"
+            android:stateListAnimator="@null"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <!-- 版本信息 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v1.0"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="32dp"
+        android:letterSpacing="0.02"/>
+
+</LinearLayout>

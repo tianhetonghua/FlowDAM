@@ -1,0 +1,18 @@
+{
+  "inbounds": [{
+    "type": "tun",
+    "tag": "tun-in",
+    "interface_name": "tun0",
+    "inet4_address": "172.19.0.1/30",
+    "mtu": 1500,
+    "auto_route": false,
+    "stack": "gvisor",
+    "sniff": true,
+    "sniff_override_destination": true
+  }],
+  "outbounds": [{
+    "type": "socks",
+    "server": "0.0.0.0",
+    "server_port": 1080
+  }]
+}

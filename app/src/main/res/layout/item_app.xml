@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="@drawable/item_app_background"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    android:radius="16dp"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:outlineProvider="background"
+    android:transitionName="app_item">
+
+    <!-- 应用图标 -->
+    <LinearLayout
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:background="@color/card_background"
+        android:elevation="4dp"
+        android:radius="16dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:outlineProvider="background">
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:contentDescription="应用图标"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:background="@null" />
+    </LinearLayout>
+
+    <!-- 应用信息 -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.02"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/appPackage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:letterSpacing="0.02"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/appUid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_hint"
+            android:textSize="12sp"
+            android:letterSpacing="0.02"
+            android:layout_marginTop="2dp"
+            android:maxLines="1"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- 选择框 -->
+    <CheckBox
+        android:id="@+id/appCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:buttonTint="@color/primary"
+        android:layout_marginStart="20dp"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:padding="8dp" />
+</LinearLayout>

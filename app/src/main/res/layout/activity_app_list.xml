@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- 应用标题栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/primary"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:elevation="8dp"
+        android:outlineProvider="background">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="选择应用"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:letterSpacing="0.02"/>
+    </LinearLayout>
+
+    <!-- 主控制容器 - 搜索框和开关共用一个容器 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/card_background"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:outlineProvider="background"
+        android:padding="16dp"
+        android:radius="16dp">
+        
+        <!-- 搜索栏 -->
+        <EditText
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/edittext_rounded"
+            android:drawablePadding="12dp"
+            android:hint="搜索应用名称或包名或UID..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:letterSpacing="0.02"
+            android:padding="16dp"
+            android:singleLine="true"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:textSize="16sp"
+            tools:text="" />
+        
+        <!-- 小开关容器 - 水平排列两个小开关 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            
+            <!-- 显示系统应用小开关 -->
+            <LinearLayout
+                android:layout_width="26dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="4dp">
+
+                <TextView
+                    android:layout_width="82dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:letterSpacing="0.02"
+                    android:text="切换系统应用"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+
+                <Switch
+                    android:id="@+id/showSystemAppsSwitch"
+                    android:layout_width="48dp"
+                    android:layout_height="24dp"
+                    android:checked="false"
+                    android:switchMinWidth="44dp"
+                    android:thumb="@drawable/switch_thumb"
+                    android:track="@drawable/switch_track" />
+            </LinearLayout>
+            
+            <!-- 显示UID小开关 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:letterSpacing="0.02"
+                    android:text="显示UID"
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp" />
+                <Switch
+                    android:id="@+id/showUidSwitch"
+                    android:layout_width="48dp"
+                    android:layout_height="24dp"
+                    android:checked="false"
+                    android:switchMinWidth="44dp"
+                    android:thumb="@drawable/switch_thumb"
+                    android:track="@drawable/switch_track" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 应用列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvApps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:clipToPadding="false"
+        android:background="@color/background"
+        android:overScrollMode="always" />
+
+    <!-- 空状态提示 -->
+    <TextView
+        android:id="@+id/emptyState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="没有找到应用"
+        android:textSize="18sp"
+        android:textColor="@color/text_secondary"
+        android:padding="32dp"
+        android:letterSpacing="0.02"/>
+</LinearLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主主题 -->
+    <style name="Theme.DAM" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 主颜色 -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        
+        <!-- 背景颜色 -->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:colorBackground">@color/background</item>
+        
+        <!-- 状态栏和导航栏 -->
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:navigationBarColor">@color/primary</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
+        <!-- 文字颜色 -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        
+        <!-- 应用标题栏 -->
+        <item name="android:actionBarStyle">@style/Widget.DAM.ActionBar</item>
+        
+        <!-- 应用弹窗样式 -->
+        <item name="android:alertDialogTheme">@style/Theme.DAM.Dialog</item>
+        
+
+    </style>
+    
+    <!-- ActionBar样式 -->
+    <style name="Widget.DAM.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/primary</item>
+        <item name="titleTextStyle">@style/TextAppearance.DAM.ActionBar.Title</item>
+    </style>
+    
+    <!-- ActionBar标题样式 -->
+    <style name="TextAppearance.DAM.ActionBar.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <!-- 对话框样式 -->
+    <style name="Theme.DAM.Dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+</resources>
