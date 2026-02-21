@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.tower.dam.core.IptablesService
+import com.tower.dam.core.ProxyForegroundService
 import com.tower.dam.data.DataManager
 import java.io.File
 import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
     private var isRunning = false
-    private val iptablesService = IptablesService()
 
     private val PREF_NAME = "dam_config"
     private val KEY_IP = "last_ip"
@@ -25,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         initConfigFile()
 
         val etIp = findViewById<EditText>(R.id.etIp)
@@ -34,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         val btnSelectApps = findViewById<Button>(R.id.btnSelectApps)
 
         loadConfigToUI(etIp, etPort)
+        
+        // 检测服务是否在运行
+        checkServiceStatus(btnStart)
 
         btnSelectApps.setOnClickListener {
             startActivity(Intent(this, AppListActivity::class.java))
@@ -46,30 +47,36 @@ class MainActivity : AppCompatActivity() {
             val uids = DataManager.getUids(this)
 
             if (!isRunning) {
-                iptablesService.start(this, ip, port, uids) { success ->
-                    runOnUiThread {
-                        if (success) {
-                            isRunning = true
-                            saveConfigToPrefs(ip, port)
-                            btnStart.text = "STOP"
-                            btnStart.setBackgroundColor(android.graphics.Color.RED)
-                        } else {
-                            Toast.makeText(this, "启动失败：请检查 Root 权限或日志", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+                // 启动前台服务
+                ProxyForegroundService.startService(this, ip, port, uids)
+                isRunning = true
+                saveConfigToPrefs(ip, port)
+                btnStart.text = "STOP"
+                btnStart.setBackgroundColor(android.graphics.Color.RED)
+                Toast.makeText(this, "服务已启动", Toast.LENGTH_SHORT).show()
             } else {
-                iptablesService.stop(this) { success ->
-                    runOnUiThread {
-                        isRunning = false
-                        btnStart.text = "START"
-                        btnStart.setBackgroundColor(android.graphics.Color.parseColor("#4CAF50"))
-                    }
-                }
+                // 停止前台服务
+                ProxyForegroundService.stopService(this)
+                isRunning = false
+                btnStart.text = "START"
+                btnStart.setBackgroundColor(android.graphics.Color.parseColor("#4CAF50"))
+                Toast.makeText(this, "服务已停止", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+    private fun checkServiceStatus(btnStart: Button) {
+        // 检测服务是否在运行
+        val running = ProxyForegroundService.isServiceRunning(this)
+        isRunning = running
+        if (running) {
+            btnStart.text = "STOP"
+            btnStart.setBackgroundColor(android.graphics.Color.RED)
+        } else {
+            btnStart.text = "START"
+            btnStart.setBackgroundColor(android.graphics.Color.parseColor("#4CAF50"))
+        }
+    }
 
     private fun initConfigFile() {
         val configFile = File(filesDir, CONFIG_NAME)

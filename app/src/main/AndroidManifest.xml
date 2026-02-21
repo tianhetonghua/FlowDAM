@@ -34,6 +34,10 @@
 <!--                <action android:name="android.net.VpnService" />-->
 <!--            </intent-filter>-->
 <!--        </service>-->
+        <service
+            android:name=".core.ProxyForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
     </application>
 
 

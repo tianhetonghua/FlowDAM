@@ -10,7 +10,13 @@ class IptablesService : IProxyService {
     private val BIN_NAME = "sing-box"
     private val CONFIG_NAME = "config.json"
 
-    override fun start(context: Context, ip: String, port: Int, uids: Set<Int>, callback: (Boolean) -> Unit) {
+    override fun start(
+        context: Context,
+        ip: String,
+        port: Int,
+        uids: Set<Int>,
+        callback: (Boolean) -> Unit
+    ) {
         thread {
             try {
                 // 1. 释放 sing-box 二进制文件
@@ -52,7 +58,8 @@ class IptablesService : IProxyService {
 
                 cmds.add("iptables -t nat -I OUTPUT -p udp --dport 53 -j RETURN")
 
-                val startBox = "nohup ${binFile.absolutePath} run -c ${configFile.absolutePath} > $logPath 2>&1 &"
+                val startBox =
+                    "nohup ${binFile.absolutePath} run -c ${configFile.absolutePath} > $logPath 2>&1 &"
                 cmds.add(startBox)
 
                 val success = runAsRoot(cmds)
@@ -77,16 +84,25 @@ class IptablesService : IProxyService {
 
     private fun runAsRoot(cmds: List<String>): Boolean {
         return try {
+            // KernelSU 拦截此处的 exec("su")
             val p = Runtime.getRuntime().exec("su")
-            p.outputStream.bufferedWriter().use { w ->
-                for (cmd in cmds) {
-                    w.write(cmd + "\n")
-                }
-                w.write("exit\n")
-                w.flush()
+            p.outputStream.use { out ->
+                val script = cmds.joinToString("\n", postfix = "\nexit\n")
+                out.write(script.toByteArray())
+                out.flush()
             }
-            p.waitFor() == 0
+
+            // 读取错误日志（调试关键：如果被 KSU 拦截，这里能看到错误）
+            val errorMsg = p.errorStream.bufferedReader().readText()
+            if (errorMsg.isNotEmpty()) {
+                android.util.Log.e("KSU_ERROR", errorMsg)
+            }
+
+            val exitCode = p.waitFor()
+            android.util.Log.d("KSU_STATUS", "Exit Code: $exitCode")
+            exitCode == 0
         } catch (e: Exception) {
+            android.util.Log.e("KSU_EXCEPTION", "Root failed", e)
             false
         }
     }
