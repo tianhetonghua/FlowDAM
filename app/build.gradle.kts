@@ -10,7 +10,8 @@ android {
     defaultConfig {
         applicationId = "com.tower.dam"
         minSdk = 24
-        targetSdk = 34
+        // 对齐 Android 13 行为，避免以 34+ 规则在 API 33 设备上触发额外 FGS/权限校验；上架商店时再按需提高
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 

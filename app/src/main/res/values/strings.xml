@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">DAM</string>
+    <string name="proxy_notification_starting_title">DAM 代理</string>
+    <string name="proxy_notification_starting_text">正在启动…</string>
+    <string name="proxy_notification_running_title">DAM 代理</string>
+    <string name="proxy_notification_running_text">运行中</string>
+    <string name="toast_proxy_start_failed">启动失败（请检查 root 与 iptables）</string>
+    <string name="toast_proxy_stop_failed">停止失败</string>
+    <string name="recovery_dialog_title">正在恢复代理</string>
+    <string name="recovery_dialog_message">检测到上次会话被系统或后台中断：内核规则仍在，但 sing-box 已停止。正在自动延续上次的代理与分流设置，请稍候。</string>
+    <string name="toast_proxy_recovered">代理已从断点恢复</string>
+    <string name="battery_opt_title">降低被系统结束的概率</string>
+    <string name="battery_opt_message">系统可能因电池优化回收后台代理。可将本应用加入「不受电池优化」列表。从最近任务划掉本应用时，代理会随任务结束并清理规则；在应用内也可随时点 STOP。</string>
+    <string name="battery_opt_open">去设置</string>
+    <string name="battery_opt_later">稍后</string>
+    <string name="fgs_unexpected_intent">前台服务启动异常，已停止</string>
 </resources>
