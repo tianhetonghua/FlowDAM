@@ -133,6 +133,25 @@
 <!--            </RadioGroup>-->
 <!--        </LinearLayout>-->
 
+        <Switch
+            android:id="@+id/switchBlockQuic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Force selected apps to use TCP (block QUIC)"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:thumbTint="@color/switch_thumb_tint"
+            android:trackTint="@color/switch_track_tint" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Optional. Only blocks UDP/443 for selected apps so they may fall back to TCP; other apps are unaffected."
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
         <!-- 选择应用按钮 -->
         <Button 
             android:id="@+id/btnSelectApps" 

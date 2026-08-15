@@ -10,6 +10,7 @@ object ProxySessionPrefs {
     private const val KEY_SESSION_ACTIVE = "proxy_session_active"
     private const val KEY_LAST_IP = "last_ip"
     private const val KEY_LAST_PORT = "last_port"
+    private const val KEY_BLOCK_SELECTED_APPS_QUIC = "block_selected_apps_quic"
 
     fun setSessionActive(context: Context, active: Boolean) {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
@@ -20,6 +21,16 @@ object ProxySessionPrefs {
     fun isSessionActive(context: Context): Boolean =
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             .getBoolean(KEY_SESSION_ACTIVE, false)
+
+    fun saveBlockSelectedAppsQuic(context: Context, enabled: Boolean) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+            .putBoolean(KEY_BLOCK_SELECTED_APPS_QUIC, enabled)
+            .apply()
+    }
+
+    fun loadBlockSelectedAppsQuic(context: Context): Boolean =
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            .getBoolean(KEY_BLOCK_SELECTED_APPS_QUIC, false)
 
     fun loadLastEndpoint(context: Context): Pair<String, Int> {
         val p = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

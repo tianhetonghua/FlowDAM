@@ -14,12 +14,14 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.tower.dam.core.ProxyConstants
 import com.tower.dam.core.ProxyForegroundService
 import com.tower.dam.data.DataManager
+import com.tower.dam.data.ProxySessionPrefs
 import java.io.File
 import java.io.FileOutputStream
 
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etIp: EditText
     private lateinit var etPort: EditText
     private lateinit var btnStart: Button
+    private lateinit var switchBlockQuic: Switch
 
     private val mainHandler = Handler(Looper.getMainLooper())
     private var recoveryDialog: AlertDialog? = null
@@ -89,9 +92,11 @@ class MainActivity : AppCompatActivity() {
         etIp = findViewById(R.id.etIp)
         etPort = findViewById(R.id.etPort)
         btnStart = findViewById(R.id.btnStart)
+        switchBlockQuic = findViewById(R.id.switchBlockQuic)
         val btnSelectApps = findViewById<Button>(R.id.btnSelectApps)
 
         loadConfigToUI(etIp, etPort)
+        switchBlockQuic.isChecked = ProxySessionPrefs.loadBlockSelectedAppsQuic(this)
         checkServiceStatus()
 
         btnSelectApps.setOnClickListener {
@@ -103,10 +108,12 @@ class MainActivity : AppCompatActivity() {
             val portString = etPort.text.toString().trim()
             val port = portString.toIntOrNull() ?: 8888
             val uids = DataManager.getUids(this)
+            val blockSelectedAppsQuic = switchBlockQuic.isChecked
 
             if (!isRunning) {
+                ProxySessionPrefs.saveBlockSelectedAppsQuic(this, blockSelectedAppsQuic)
                 btnStart.isEnabled = false
-                ProxyForegroundService.startService(this, ip, port, uids)
+                ProxyForegroundService.startService(this, ip, port, uids, blockSelectedAppsQuic)
             } else {
                 btnStart.isEnabled = false
                 ProxyForegroundService.stopService(this)
@@ -175,7 +182,13 @@ class MainActivity : AppCompatActivity() {
         recoveryDialog?.show()
 
         btnStart.isEnabled = false
-        ProxyForegroundService.startService(this, ip, port, uids)
+        ProxyForegroundService.startService(
+            this,
+            ip,
+            port,
+            uids,
+            ProxySessionPrefs.loadBlockSelectedAppsQuic(this)
+        )
         checkServiceStatus()
     }
 

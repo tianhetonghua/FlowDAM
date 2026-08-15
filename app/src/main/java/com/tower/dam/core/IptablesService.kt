@@ -16,6 +16,7 @@ class IptablesService {
         ip: String,
         port: Int,
         uids: Set<Int>,
+        blockSelectedAppsQuic: Boolean,
         callback: (Boolean) -> Unit
     ) {
         thread {
@@ -55,7 +56,16 @@ class IptablesService {
                 cmds.add("iptables -t filter -F $filterChain")
                 cmds.add("iptables -t filter -D OUTPUT -j $filterChain 2>/dev/null || true")
                 cmds.add("iptables -t filter -I OUTPUT 1 -j $filterChain")
-                cmds.add("iptables -t filter -A $filterChain -p udp --dport 443 -j DROP")
+                if (blockSelectedAppsQuic) {
+                    // redirect inbound 不处理 UDP；仅阻断选中 UID 的 QUIC，促使其回退到可转发的 TCP。
+                    // 必须限定 UID，避免影响设备上其他应用的 UDP/443 流量。
+                    uids.forEach { uid ->
+                        cmds.add(
+                            "iptables -t filter -A $filterChain -p udp -m owner --uid-owner $uid " +
+                                "--dport 443 -j DROP"
+                        )
+                    }
+                }
 
                 val startBox =
                     "nohup ${binFile.absolutePath} run -c ${configFile.absolutePath} > $logPath 2>&1 &"

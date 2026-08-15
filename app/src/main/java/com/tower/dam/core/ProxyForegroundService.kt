@@ -74,7 +74,8 @@ class ProxyForegroundService : Service() {
                 val ip = intent.getStringExtra(EXTRA_IP) ?: "0.0.0.0"
                 val port = intent.getIntExtra(EXTRA_PORT, 8889)
                 val uids = intent.getIntArrayExtra(EXTRA_UIDS)?.toSet() ?: emptySet()
-                beginStart(ip, port, uids)
+                val blockSelectedAppsQuic = intent.getBooleanExtra(EXTRA_BLOCK_SELECTED_APPS_QUIC, false)
+                beginStart(ip, port, uids, blockSelectedAppsQuic)
             }
             intent == null -> {
                 if (!ProxySessionPrefs.isSessionActive(this)) {
@@ -83,7 +84,8 @@ class ProxyForegroundService : Service() {
                 }
                 val (ip, port) = ProxySessionPrefs.loadLastEndpoint(this)
                 val uids = DataManager.getUids(this)
-                beginStart(ip, port, uids)
+                val blockSelectedAppsQuic = ProxySessionPrefs.loadBlockSelectedAppsQuic(this)
+                beginStart(ip, port, uids, blockSelectedAppsQuic)
             }
             else -> {
                 Log.w(TAG, "Unexpected onStartCommand action=${intent?.action} flags=$flags")
@@ -113,7 +115,7 @@ class ProxyForegroundService : Service() {
         stopSelf()
     }
 
-    private fun beginStart(ip: String, port: Int, uids: Set<Int>) {
+    private fun beginStart(ip: String, port: Int, uids: Set<Int>, blockSelectedAppsQuic: Boolean) {
         try {
             startForegroundWithType(
                 buildNotification(
@@ -133,7 +135,7 @@ class ProxyForegroundService : Service() {
             return
         }
         thread {
-            iptablesService.start(this, ip, port, uids) { ok ->
+            iptablesService.start(this, ip, port, uids, blockSelectedAppsQuic) { ok ->
                 if (ok) {
                     ProxySessionPrefs.setSessionActive(this, true)
                     val nm = getSystemService(NotificationManager::class.java)
@@ -224,13 +226,21 @@ class ProxyForegroundService : Service() {
         const val EXTRA_IP = "ip"
         const val EXTRA_PORT = "port"
         const val EXTRA_UIDS = "uids"
+        const val EXTRA_BLOCK_SELECTED_APPS_QUIC = "block_selected_apps_quic"
 
-        fun startService(context: Context, ip: String, port: Int, uids: Set<Int>) {
+        fun startService(
+            context: Context,
+            ip: String,
+            port: Int,
+            uids: Set<Int>,
+            blockSelectedAppsQuic: Boolean
+        ) {
             val intent = Intent(context, ProxyForegroundService::class.java).apply {
                 action = ACTION_START
                 putExtra(EXTRA_IP, ip)
                 putExtra(EXTRA_PORT, port)
                 putExtra(EXTRA_UIDS, uids.toIntArray())
+                putExtra(EXTRA_BLOCK_SELECTED_APPS_QUIC, blockSelectedAppsQuic)
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(intent)
